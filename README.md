@@ -1,6 +1,6 @@
-[![Loftux AB](https://loftux.com/files/static/images/ubuntu_installer.png?ref=ubuntuinstall)](https://loftux.com?ref=ubuntuinstall)
+[![Loftux AB](https://iurit.org/share/res/iurit/images/iurit-logo.png)](https://iurit.org)
 
-Alfresco Ubuntu Installer
+Alfresco Debian Installer
 =======================
 
 This install script and guide was created by Peter Löfgren, [Loftux AB](http://loftux.com).  
@@ -9,12 +9,12 @@ Please visit [https://loftux.com](https://loftux.com/en/?ref=ubuntuinstall "loft
 
 
 Current version : **Alfresco Community 6.1 (6.1.1 Repository,6.1.0 Share)** or **LXCommunity ECM LX101**  
-Ubuntu Version : **16.04** or later.
+Debian Version : **10 Buster** or later.
 
-Alfresco script based install for Ubuntu servers.
+Alfresco script based install for Debian servers.
 ----------------------------
 
-This script will help you set up an Alfresco server instance with all necessary third party components.  Some will be installed via Ubuntu packages, some directly downloaded. The script will walk you through the process. In the end, there will be some manual tasks to complete the installation.
+This script will help you set up an Alfresco server instance with all necessary third party components.  Some will be installed via Debian packages, some directly downloaded. The script will walk you through the process. In the end, there will be some manual tasks to complete the installation.
 
 Alfresco does have installers for Linux, and you may be better off with using those installers if you just want to do a quick test install.
 
@@ -26,10 +26,10 @@ For commercial support with your installation, upgrades and running a production
 
 Installing
 ----
-To start the install, in Ubuntu terminal run;  
+To start the install, in Debian terminal run;  
 
 ```
-curl -O https://raw.githubusercontent.com/loftuxab/alfresco-ubuntu-install/master/alfinstall.sh  
+curl -O https://raw.githubusercontent.com/iwkse/alfresco-debian-install/master/alfinstall.sh  
 chmod u+x alfinstall.sh
 ./alfinstall.sh
 ```
@@ -41,7 +41,7 @@ Please read all of this README before you go ahead.
 There is also lots of documentation at [http://docs.alfresco.com/5.1](http://docs.alfresco.com/5.1). To get started to become an Alfresco server Administrator, read and make yourself familiar with the 'Administering' section.
 
 ## Notes
-- Only 64-bit Ubuntu is supported. Java cannot address enough memory to support running Alfresco on a 32-bit system.
+- Only 64-bit Debian is supported. Java cannot address enough memory to support running Alfresco on a 32-bit system.
 - Many components have their download urls pointed to specific version. Whenever a new version comes out, the older version is removed from the download server and this script breaks. These will be updated as soon as they are made known. This is known to happen with LibreOffice and Tomcat. The script will check if the needed components are available and break if they are not.
 
 More on the components/installation steps.
@@ -64,7 +64,7 @@ In this part of the install is also an update to make sure a specific locale is 
 
 Limits
 --------
-Ubuntu default for number of allowed open files in the file system is too low for alfresco use and tomcat may because of this stop with the error "too many open files". You should update this value if you have not done so. 
+Debian default for number of allowed open files in the file system is too low for alfresco use and tomcat may because of this stop with the error "too many open files". You should update this value if you have not done so. 
 
 Read more at [http://wiki.alfresco.com/wiki/Too_many_open_files](http://wiki.alfresco.com/wiki/Too_many_open_files).
 
@@ -72,7 +72,7 @@ Starting/Stopping Alfresco and Search Services
 --------
 Tomcat is the java application server used to actually run Alfresco. The script downloads the latest version of Tomcat 8, and then updates its configuration files to better support running Alfresco.  
 
-Ubuntu systemd is used to stop and start tomcat. You **must** have a look and verify settings;     
+Debian systemd is used to stop and start tomcat. You **must** have a look and verify settings;     
 `/opt/alfresco/alfresco-service.sh` 
 
 Edit locale setting (LC_ALL) and the memory settings in this file to match your server.  
@@ -82,7 +82,7 @@ About memory, it has default max set to 2G. That is good enough if you have abou
 You will be presented with the option to add either MySql or Postgresql jdbc libraries. You should probably add at least one of them.
 
 Once the install is complete (the entire script and the manual steps following that), to start run  
-`sudo /opt/alfresco/alfresco-service.sh start` (16.04) - this is a wrapper, using `sudo systemctl start alfresco.service` will have the same result.  
+`sudo /opt/alfresco/alfresco-service.sh start` (10) - this is a wrapper, using `sudo systemctl start alfresco.service` will have the same result.  
 It also starts/stops Alfresco Search Services, it can be started separately with `sudo systemctl start alfresco-search.service`.  
 
 To stop Tomcat for Alfresco, just switch `start` to `stop` in the above command. Using `status` as a parameter will show status of the Alfresco Tomcat service
@@ -91,7 +91,7 @@ Nginx
 --------
 It is sometimes useful to have a front-end for your Tomcat Alfresco instance. Since Tomcat runs default on port 8080, you can use Nginx as proxy. It is also a lot easier to add ssl support. The default config includes sample configuration for this. Share resource files (anything loaded from /share/res/) is cached in nginx, so it doesn't need to be fetched from tomcat.  
 
-The script will use the latest version of the Ubuntu package from Nginx instead of default Ubuntu nginx packages. This allows for http/2 support.  
+The script will use the latest version of the Debian package from Nginx instead of default Debian nginx packages. This allows for http/2 support.  
 
 The default config file is found in folder `/etc/nginx/conf.d/alfresco.conf`. If you want to use ssl, you can replace this file with the sample config in `alfresco.conf.ssl`. Common settings is found in file `basic-settings.conf`.
 
@@ -121,11 +121,11 @@ LibreOffice
 -------------
 Downloads and install LibreOffice from libreoffice.org (technically from a mirror). Alfresco just use LibreOffice for transformations, and later versions have better (hopefully) conversion filters.
 
-In this step ImageMagick is also installed from Ubuntu standard packages, if you skip this step install ImageMagick separately. Some extra font packages like Microsoft true type fonts is also installed, since you likely will add documents to Alfresco that have used them, this will result in better transformations.  
+In this step ImageMagick is also installed from Debian standard packages, if you skip this step install ImageMagick separately. Some extra font packages like Microsoft true type fonts is also installed, since you likely will add documents to Alfresco that have used them, this will result in better transformations.  
 
 ImageMagick  
 -----------  
-Installed using the Ubuntu default package.  
+Installed using the Debian default package.  
 
 If you get the error `no decode delegate for this image format` on start in the alfresco.log make sure to check that the path for `img.coders=` in alfresco-global.properties. The path may be version specific for the installed version.  
 
@@ -208,10 +208,10 @@ The script does not use version x of component z, can you fix this?
 
 Probably, but you can also. Just edit the script with the version you want to use, most of the specific links can be found in the beginning of the script.  
 
-Why does the script use the latest versions/not use Ubuntu packages?
+Why does the script use the latest versions/not use Debian packages?
 ---
 
-This combination of packages/downloaded install has been found to work well. But that may not hold true always. If you feel more confident to run a specific version of a component, or want to use a standard Ubuntu package, modify the script. Or skip that part in the install script, and just use this script as an install guide on what needs to be in place for a production server.  
+This combination of packages/downloaded install has been found to work well. But that may not hold true always. If you feel more confident to run a specific version of a component, or want to use a standard Debian package, modify the script. Or skip that part in the install script, and just use this script as an install guide on what needs to be in place for a production server.  
 
 
 License
