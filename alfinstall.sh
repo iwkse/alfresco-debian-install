@@ -35,7 +35,7 @@ JDBCPOSTGRES=postgresql-42.2.5.jar
 JDBCMYSQLURL=https://dev.mysql.com/get/Downloads/Connector-J
 JDBCMYSQL=mysql-connector-java-5.1.47.tar.gz
 
-LIBREOFFICE=https://download.documentfoundation.org/libreoffice/stable/6.4.0/deb/x86_64/LibreOffice_6.4.0_Linux_x86-64_deb.tar.gz
+LIBREOFFICE=https://download.documentfoundation.org/libreoffice/stable/6.4.7/deb/x86_64/LibreOffice_6.4.7_Linux_x86-64_deb.tar.gz
 ALFRESCO_PDF_RENDERER=https://artifacts.alfresco.com/nexus/service/local/repositories/releases/content/org/alfresco/alfresco-pdf-renderer/1.1/alfresco-pdf-renderer-1.1-linux.tgz
 
 ALFREPOWAR=https://downloads.loftux.net/public/content/org/alfresco/content-services-community/6.1.1/content-services-community-6.1.1.war
@@ -146,7 +146,7 @@ echoblue "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 sudo apt-get $APTVERBOSITY update;
 echo
 
-if [ ! -x "$(command -v systemctl)" ]; then
+if [ -x "$(command -v systemctl)" ]; then
   echoblue "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"
   echo "You are installing for version 10 or later (using systemd for services)."
   echoblue "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"
@@ -240,7 +240,7 @@ if [ "$installtomcat" = "y" ]; then
   echo "Downloading tomcat..."
   curl -# -L -O $TOMCAT_DOWNLOAD
   # Make sure install dir exists, including logs dir
-  sudo mkdir -p $ALF_HOME/logs
+  mkdir -p $ALF_HOME/logs
   echo "Extracting..."
   tar xf "$(find . -maxdepth 1 -type f -name "apache-tomcat*")" -C $CATALINA_HOME
   # Remove apps not needed
@@ -338,7 +338,6 @@ echo "forwarding, sample script in $ALF_HOME/scripts/iptables.sh"
 echoblue "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"
 
 if [ ! -x "$(command -v nginx)" ]; then
-
   read -e -p "Install nginx${ques} [y/n] " -i "$DEFAULTYESNO" installnginx
   if [ "$installnginx" = "y" ]; then
     echoblue "Installing nginx. Fetching packages..."
@@ -369,6 +368,7 @@ if [ ! -x "$(command -v nginx)" ]; then
     echo
     echogreen "Finished installing nginx"
     echo
+  fi
 else
   echo "Skipping install of nginx"
 fi
@@ -677,7 +677,7 @@ if [ "$installsolr" = "y" ]; then
   popd
 
   echogreen "Downloading Solr6 scripts and settings file..."
-  curl -# -o /etc/systemd/system/alfresco-search.service $BASE_DOWNLOAD/search/alfresco-search.service
+  sudo curl -# -o /etc/systemd/system/alfresco-search.service $BASE_DOWNLOAD/search/alfresco-search.service
   curl -# -o $ALF_HOME/solr6/solrhome/conf/shared.properties $BASE_DOWNLOAD/search/shared.properties
   curl -# -o $ALF_HOME/solr6/solr.in.sh $BASE_DOWNLOAD/search/solr.in.sh
   chmod u+x $ALF_HOME/solr6/solr.in.sh
