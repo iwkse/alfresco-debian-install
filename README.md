@@ -3,7 +3,14 @@
 Alfresco Debian Installer
 =======================
 
-This install script and guide was created by Peter Löfgren, [Loftux AB](http://loftux.com).  
+This install script is a port of the Alfresco Ubuntu installer created by Peter Löfgren, [Loftux AB](http://loftux.com).  
+
+It assumes you already have a user to run Alfresco, the user creating section has been removed as I want a full user.
+In the sudoers.d folder there's a configuration file to avoid password for commands used in the script. Just copy in
+/etc/sudoers.d and you're free to remove it after the installation is completed.
+
+**WARNING: This is untested stuff for now, so you might find bugs during the process.
+Please report if you find any **
 
 Please visit [https://loftux.com](https://loftux.com/en/?ref=ubuntuinstall "loftux.com") (English) [https://loftux.se](https://loftux.se/sv?ref=ubuntuinstall "loftux.se") (Swedish)  for more information.
 
@@ -217,4 +224,5 @@ This combination of packages/downloaded install has been found to work well. But
 License
 ===
 Copyright 2013-2018 Loftux AB, Peter Löfgren  
+Copyright 2020 Salvatore De Paolis, Iurit
 Distributed under the Creative Commons Attribution-ShareAlike 3.0 Unported License (CC BY-SA 3.0)
