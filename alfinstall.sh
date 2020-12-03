@@ -749,6 +749,9 @@ if [ "$installbart" = "y" ]; then
   sudo systemctl restart cron
   echogreen "B.A.R.T Cron is installed to run in 5AM every day as the $ALF_USER user"
 fi
+popd
+
+rm -rf $TMP_INSTALL
 
 echo
 echogreen "- - - - - - - - - - - - - - - - -"
