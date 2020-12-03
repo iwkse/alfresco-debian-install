@@ -10,7 +10,7 @@ In the sudoers.d folder there's a configuration file to avoid password for comma
 /etc/sudoers.d and you're free to remove it after the installation is completed.
 
 **WARNING: This is untested stuff for now, so you might find bugs during the process.
-Please report if you find any **
+Please report if you find any**
 
 Please visit [https://loftux.com](https://loftux.com/en/?ref=ubuntuinstall "loftux.com") (English) [https://loftux.se](https://loftux.se/sv?ref=ubuntuinstall "loftux.se") (Swedish)  for more information.
 
