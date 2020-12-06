@@ -495,13 +495,13 @@ echo
     tar -xf alfresco-pdf-renderer.tgz -C $ALF_HOME/bin/
   fi
   mkdir -p $ALF_HOME/scripts
-  if [ $USE_MARIADB = 'y' ]; then
+  if [ "$USE_MARIADB" = 'y' ]; then
     if [ ! -f "$ALF_HOME/scripts/mariadb.sh" ]; then
       echo "Downloading mariadb.sh install and setup script..."
       curl -# -o $ALF_HOME/scripts/mariadb.sh $BASE_DOWNLOAD/scripts/mariadb.sh
     fi
   fi
-  if [ $USE_POSTGRESQL = 'y' ]; then
+  if [ "$USE_POSTGRESQL" = 'y' ]; then
     if [ ! -f "$ALF_HOME/scripts/postgresql.sh" ]; then
       echo "Downloading postgresql.sh install and setup script..."
       curl -# -o $ALF_HOME/scripts/postgresql.sh $BASE_DOWNLOAD/scripts/postgresql.sh
@@ -625,7 +625,7 @@ echo "Install Alfresco Office Services (Sharepoint protocol emulation)."
 echo "This allows you to open and save Microsoft Office documents online."
 echored "This module is not Open Source (Alfresco proprietary)."
 echoblue "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"
-read -e -p "Install Alfresco Office Services integration${ques} [y/n] " -i "$DEFAULTYESNO" installssharepoint
+read -e -p "Install Alfresco Office Services integration${ques} [y/n] " -i "n" installssharepoint
 if [ "$installssharepoint" = "y" ]; then
     echogreen "Installing Alfresco Offices Services bundle..."
     echogreen "Downloading Alfresco Office Services amp file"
