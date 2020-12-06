@@ -376,7 +376,7 @@ fi
 echo
 echoblue "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"
 echo "Install Java JDK."
-echo "This will install OpenJDK 8 version of Java. If you prefer Oracle Java 8 "
+echo "This will install OpenJDK 11 version of Java. If you prefer Oracle Java 11 "
 echo "you need to download and install that manually."
 echoblue "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"
 read -e -p "Install OpenJDK${ques} [y/n] " -i "$DEFAULTYESNO" installjdk
