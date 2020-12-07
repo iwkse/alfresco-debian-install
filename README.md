@@ -34,9 +34,10 @@ Installing
 To start the install, in Debian terminal run;  
 
 ```
-curl -O https://raw.githubusercontent.com/iwkse/alfresco-debian-install/master/alfinstall.sh  
-chmod u+x alfinstall.sh
-./alfinstall.sh
+git clone https://github.com/iwkse/alfresco-debian-install.git
+cd alfresco-debian-install
+chmod u+x install.sh
+./install.sh
 ```
 
 All install options will be presented with an introduction. They default to 'y' (yes), so type n to skip install of that component. You need **sudo** access to install.  
@@ -53,20 +54,6 @@ More on the components/installation steps.
 =======
 Once the script is downloaded you can modify (if necessary) it to fit your purpose. 
 
-LXCommunity ECM
---------
-You will be asked to select if you want to install LXCommunity ECM or Alfresco Community.  
-
-LXCommunity ECM is a custom build of Alfresco with additional fixes and enhancements and for which you can optionally buy support. You can find more information on this offering at [https://loftux.com/alfresco](https://loftux.se/en/products-and-add-ons/alfresco?ref=ubuntuinstalloffer).
-You can switch between Alfresco Community or LXCommunity ECM as long as they are based on the same schema, see [version overview](https://loftux.se/en/products-and-add-ons/alfresco/alfresco-versions).
-
-
-Alfresco User
---------
-The Alfresco user is the server account used to run tomcat. You should never run tomcat as `root`, so if you do not already have the alfresco (default in the install script) user, you should add the alfresco user.  
-
-In this part of the install is also an update to make sure a specific locale is supported (`default sv_SE.utf8`). This is useful for LibreOffice date formatting to work correctly during transformations.  
-
 Limits
 --------
 Debian default for number of allowed open files in the file system is too low for alfresco use and tomcat may because of this stop with the error "too many open files". You should update this value if you have not done so. 
@@ -78,7 +65,7 @@ Starting/Stopping Alfresco and Search Services
 Tomcat is the java application server used to actually run Alfresco. The script downloads the latest version of Tomcat 8, and then updates its configuration files to better support running Alfresco.  
 
 Debian systemd is used to stop and start tomcat. You **must** have a look and verify settings;     
-`/opt/alfresco/alfresco-service.sh` 
+`$HOME/alfresco/alfresco-service.sh` 
 
 Edit locale setting (LC_ALL) and the memory settings in this file to match your server.  
 
@@ -87,7 +74,7 @@ About memory, it has default max set to 2G. That is good enough if you have abou
 You will be presented with the option to add either MySql or Postgresql jdbc libraries. You should probably add at least one of them.
 
 Once the install is complete (the entire script and the manual steps following that), to start run  
-`sudo /opt/alfresco/alfresco-service.sh start` (10) - this is a wrapper, using `sudo systemctl start alfresco.service` will have the same result.  
+`$HOME/alfresco/alfresco-service.sh start` (10) - this is a wrapper, using `sudo systemctl start alfresco.service` will have the same result.  
 It also starts/stops Alfresco Search Services, it can be started separately with `sudo systemctl start alfresco-search.service`.  
 
 To stop Tomcat for Alfresco, just switch `start` to `stop` in the above command. Using `status` as a parameter will show status of the Alfresco Tomcat service
@@ -110,9 +97,9 @@ To set the downtime (in minutes) and a custom message, call the ams.sh script fo
 
 The above example will set the downtime to 20 minutes (from when you shut down) and with a custom message. If called without parameters it defaults to 10 minutes. Custom message is optional, but if used you also must set the timeout.  
 
-The script will shut down Alfresco tomcat instance. To start it you must call `sudo /opt/alfresco/alfresco-service.sh start`.  
+The script will shut down Alfresco tomcat instance. To start it you must call `$HOME/alfresco/alfresco-service.sh start`.  
 
-The `maintenance.html` page is found in its default location /opt/alfresco/www and can be customized to your needs.  
+The `maintenance.html` page is found in its default location $HOME/alfresco/www and can be customized to your needs.  
 
 If you want to implement this support and already have run the `alfinstall.sh` script, compare your `nginx.conf` to what is currently in `git/master`.
 
@@ -148,7 +135,7 @@ Solr can run on a separate server, you can use this script to install the core f
 
 Addons - Manage amps and war files.
 ========
-A special directory is created, `/opt/alfresco/addons`. This directory can be used to manage any addons and the core war files.  
+A special directory is created, `$HOME/alfresco/addons`. This directory can be used to manage any addons and the core war files.  
 * `addons/alfresco` - Alfresco amp files.  
 * `addons/share` - Share amp files.  
 * `addons/war` - alfresco.war and share.war files goes in here.  
@@ -161,12 +148,12 @@ If you didn't install Alfresco war files with the install script you can use thi
 
 Scripts - Supporting scripts
 ============================
-In the directory `/opt/alfresco/scripts` there are some useful scripts installed. Or if you did not run the install script, grab them from github. Here is what they do:  
+In the directory `$HOME/alfresco/scripts` there are some useful scripts installed. Or if you did not run the install script, grab them from github. Here is what they do:  
 * `libreoffice.sh` - Start/stop libreoffice manually. Sometimes libreoffice crashes during a transformation, use this script to start it again. Alfresco will re-connect when the server detects libreoffice is running. You can add this to crontab for automatic checks:  
 NO LONGER NEEDED: Since version 6 or LX101, Alfresco uses JodConverter with built in process management.  
 
-`*/10 * * * * /opt/alfresco/scripts/libreoffice.sh start 2>&1 >> /opt/alfresco/logs/office.log`  
-`0 2 * * * /opt/alfresco/scripts/libreoffice.sh restart 2>&1 > /opt/alfresco/logs/office.log`  
+`*/10 * * * * $HOME/alfresco/scripts/libreoffice.sh start 2>&1 >> $HOME/alfresco/logs/office.log`  
+`0 2 * * * $HOME/alfresco/scripts/libreoffice.sh restart 2>&1 > $HOME/alfresco/logs/office.log`  
 
 This will make sure libreoffice is running (if not already started and tomcat is running). Once per night it will also do a complete restart (in case LibreOffice behaves badly).  
 * `iptables.sh` - Script to add port forwarding. Useful if you want to use cifs, ftp that will not run on lower port numbers if not root. Or if you´re not using nginx as front end and want to forward port 80 to 8080.  

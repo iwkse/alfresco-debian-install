@@ -68,11 +68,11 @@ GC_LOG_OPTS=""
 # Alfresco configuration. This file is automatically included by solr. You can define your custom settings here
 SOLR_OPTS="$SOLR_OPTS -Dsolr.jetty.request.header.size=1000000 -Dsolr.jetty.threads.stop.timeout=300000 -Ddisable.configEdit=true"
 
-SOLR_OPTS="$SOLR_OPTS -Dsolr.content.dir=/opt/alfresco/alf_data/solr6/content -Dsolr.model.dir=/opt/alfresco/alf_data/solr6/models -Ddata.dir.root=/opt/alfresco/alf_data/solr6/index"
+SOLR_OPTS="$SOLR_OPTS -Dsolr.content.dir=@@INSTHOME@@/alf_data/solr6/content -Dsolr.model.dir=@@INSTHOME@@/alf_data/solr6/models -Ddata.dir.root=@@INSTHOME@@/alf_data/solr6/index"
 #SSL Options
 SOLR_OPTS="$SOLR_OPTS -Dsolr.allow.unsafe.resourceloading=true -Djavax.net.ssl.keyStoreType=JCEKS -Djavax.net.ssl.trustStoreType=JCEKS -Dsolr.ssl.checkPeerName=false"
 #Use only at the first startup
-if [ ! -d "/opt/alfresco/alf_data/solr6/solrhome/alfresco/conf" ]; then
+if [ ! -d "@@INSTHOME@@/alf_data/solr6/solrhome/alfresco/conf" ]; then
   SOLR_OPTS="$SOLR_OPTS -Dcreate.alfresco.defaults=alfresco,archive"
 fi
 
@@ -81,8 +81,8 @@ fi
 #SOLR_OPTS="${SOLR_OPTS} -Dcom.sun.management.jmxremote.port=8018"
 #SOLR_OPTS="${SOLR_OPTS} -Dcom.sun.management.jmxremote.ssl=false"
 #SOLR_OPTS="${SOLR_OPTS} -Dcom.sun.management.jmxremote.authenticate=true"
-#SOLR_OPTS="${SOLR_OPTS} -Dcom.sun.management.jmxremote.password.file=/opt/alfresco/jmx/jmxremote.password"
-#SOLR_OPTS="${SOLR_OPTS} -Dcom.sun.management.jmxremote.access.file=/opt/alfresco/jmx/jmxremote.access"
+#SOLR_OPTS="${SOLR_OPTS} -Dcom.sun.management.jmxremote.password.file=@@INSTHOME@@/jmx/jmxremote.password"
+#SOLR_OPTS="${SOLR_OPTS} -Dcom.sun.management.jmxremote.access.file=@@INSTHOME@@/jmx/jmxremote.access"
 
 # Anything you add to the SOLR_OPTS variable will be included in the java
 # start command line as-is, in ADDITION to other options. If you specify the
@@ -97,7 +97,7 @@ fi
 
 # Path to a directory for Solr to store cores and their data. By default, Solr will use server/solr
 # If solr.xml is not stored in ZooKeeper, this directory needs to contain solr.xml
-SOLR_HOME=/opt/alfresco/alf_data/solr6/solrhome
+SOLR_HOME=@@INSTHOME@@/alf_data/solr6/solrhome
 
 # Solr provides a default Log4J configuration properties file in server/resources
 # however, you may want to customize the log settings and file appender location
@@ -109,17 +109,17 @@ SOLR_HOME=/opt/alfresco/alf_data/solr6/solrhome
 #SOLR_LOG_LEVEL=INFO
 
 # Location where Solr should write logs to. Absolute or relative to solr start dir
-SOLR_LOGS_DIR=/opt/alfresco/logs/solr6
-LOG4J_PROPS=/opt/alfresco/solr6/logs/log4j.properties
+SOLR_LOGS_DIR=@@INSTHOME@@/logs/solr6
+LOG4J_PROPS=@@INSTHOME@@/solr6/logs/log4j.properties
 
 # Sets the port Solr binds to, default is 8983
 #SOLR_PORT=8983
 
 # Uncomment to set SSL-related system properties
 # Be sure to update the paths to the correct keystore for your environment
-#SOLR_SSL_KEY_STORE=/opt/alfresco/alf_data/keystore/ssl.keystore
+#SOLR_SSL_KEY_STORE=@@INSTHOME@@/alf_data/keystore/ssl.keystore
 #SOLR_SSL_KEY_STORE_PASSWORD=kT9X6oe68t
-#SOLR_SSL_TRUST_STORE=/opt/alfresco/alf_data/keystore/ssl.truststore
+#SOLR_SSL_TRUST_STORE=@@INSTHOME@@/alf_data/keystore/ssl.truststore
 #SOLR_SSL_TRUST_STORE_PASSWORD=kT9X6oe68t
 #SOLR_SSL_NEED_CLIENT_AUTH=true
 #SOLR_SSL_WANT_CLIENT_AUTH=false

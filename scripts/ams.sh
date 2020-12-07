@@ -7,7 +7,7 @@
 # -------
 
 USER=www-data
-ALF_HOME_WWW=/opt/alfresco/www
+ALF_HOME_WWW=@@INSTHOME@@/www
 DOWNTIME=10
 
 #((!$#)) && echo Supply expected downtime in minutes as argument! && exit 1
@@ -36,4 +36,4 @@ echo "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 echo "Stopping the Alfresco tomcat instance"
 echo "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"
 echo
-sudo /opt/alfresco/alfresco-service.sh stop
+sudo @@INSTHOME@@/alfresco-service.sh stop

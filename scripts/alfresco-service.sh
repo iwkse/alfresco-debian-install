@@ -9,9 +9,9 @@
 export LC_ALL=@@LOCALESUPPORT@@
 #export JAVA_HOME=/usr/lib/jvm/java-8-oracle/jre
 #export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
-export ALF_HOME=/opt/alfresco
-export CATALINA_HOME=/opt/alfresco/tomcat
-export CATALINA_TMPDIR=/opt/alfresco/tomcat/temp
+export ALF_HOME=@@INSTHOME@@
+export CATALINA_HOME=@@INSTHOME@@/tomcat
+export CATALINA_TMPDIR=@@INSTHOME@@/tomcat/temp
 export JRE_HOME=$JAVA_HOME
 export PATH=$PATH:$HOME/bin:$JRE_HOME/bin
 export CATALINA_PID=$ALF_HOME/tomcat.pid

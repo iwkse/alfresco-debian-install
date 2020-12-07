@@ -7,89 +7,10 @@
 # Distributed under the Creative Commons Attribution-ShareAlike 3.0 Unported License (CC BY-SA 3.0)
 # -------
 
-ALF_HOME=$HOME/alfresco
-ALF_DATA_HOME=$ALF_HOME/alf_data
-CATALINA_HOME=$ALF_HOME/tomcat
-ALF_USER=$USER
-ALF_GROUP=$ALF_USER
-APTVERBOSITY="-qq -y"
-TMP_INSTALL=$HOME/alfrescoinstall
-DEFAULTYESNO="y"
-NGINX_CACHE=$ALF_HOME/nginx_cache/alfresco
-USE_MARIADB=
-USE_POSTGRESQL=
+source src/vars.sh
+source src/urls.sh
 
-# Branch name to pull from server. Use master for stable.
-BRANCH=master
-BASE_DOWNLOAD=https://raw.githubusercontent.com/iwkse/alfresco-debian-install/$BRANCH
-KEYSTOREBASE=https://svn.alfresco.com/repos/alfresco-open-mirror/alfresco/HEAD/root/projects/repository/config/alfresco/keystore
-
-#Change this to prefered locale to make sure it exists. This has impact on LibreOffice transformations
-# LOCALESUPPORT=sv_SE.utf8
-# LOCALESUPPORT=it_IT.utf8
-LOCALESUPPORT=en_US.utf8
-
-TOMCAT_DOWNLOAD=http://archive.apache.org/dist/tomcat/tomcat-8/v8.0.53/bin/apache-tomcat-8.0.53.tar.gz
-JDBCPOSTGRESURL=https://jdbc.postgresql.org/download
-JDBCPOSTGRES=postgresql-42.2.5.jar
-JDBCMYSQLURL=https://dev.mysql.com/get/Downloads/Connector-J
-JDBCMYSQL=mysql-connector-java-5.1.47.tar.gz
-
-LIBREOFFICE=https://download.documentfoundation.org/libreoffice/stable/6.4.7/deb/x86_64/LibreOffice_6.4.7_Linux_x86-64_deb.tar.gz
-ALFRESCO_PDF_RENDERER=https://artifacts.alfresco.com/nexus/service/local/repositories/releases/content/org/alfresco/alfresco-pdf-renderer/1.1/alfresco-pdf-renderer-1.1-linux.tgz
-
-ALFREPOWAR=https://downloads.loftux.net/public/content/org/alfresco/content-services-community/6.1.1/content-services-community-6.1.1.war
-ALFSHAREWAR=https://downloads.loftux.net/public/content/org/alfresco/share/6.1.0/share-6.1.0.war
-ALFSHARESERVICES=https://downloads.loftux.net/public/content/org/alfresco/alfresco-share-services/6.1.0/alfresco-share-services-6.1.0.amp
-ALFMMTJAR=https://downloads.loftux.net/public/content/org/alfresco/alfresco-mmt/6.0/alfresco-mmt-6.0.jar
-
-ASS_DOWNLOAD=https://downloads.loftux.net/public/content/org/alfresco/alfresco-search-services/1.3.0.1/alfresco-search-services-1.3.0.1.zip
-
-LXALFREPOWAR=https://downloads.loftux.net/alfresco/alfresco-platform/LX101/alfresco-platform-LX101.war
-LXALFSHAREWAR=https://downloads.loftux.net/alfresco/share/LX101/share-LX101.war
-LXALFSHARESERVICES=https://downloads.loftux.net/alfresco/alfresco-share-services/LX101/alfresco-share-services-LX101.amp
-LXAOS_AMP=https://downloads.loftux.net/alfresco/aos-module/alfresco-aos-module/1.2.0.1/alfresco-aos-module-1.2.0.1.amp
-
-
-GOOGLEDOCSREPO=https://downloads.loftux.net/public/content/org/alfresco/integrations/alfresco-googledocs-repo/3.0.4.3/alfresco-googledocs-repo-3.0.4.3.amp
-GOOGLEDOCSSHARE=https://downloads.loftux.net/public/content/org/alfresco/integrations/alfresco-googledocs-share/3.0.4.3/alfresco-googledocs-share-3.0.4.3.amp
-
-AOS_VTI=https://downloads.loftux.net/public/content/org/alfresco/aos-module/alfresco-vti-bin/1.2.2/alfresco-vti-bin-1.2.2.war
-AOS_SERVER_ROOT=https://downloads.loftux.net/public/content/org/alfresco/alfresco-server-root/6.0.1/alfresco-server-root-6.0.1.war
-AOS_AMP=https://downloads.loftux.net/public/content/org/alfresco/aos-module/alfresco-aos-module/1.2.2/alfresco-aos-module-1.2.2.amp
-
-BASE_BART_DOWNLOAD=https://raw.githubusercontent.com/toniblyx/alfresco-backup-and-recovery-tool/master/src
-
-BART_PROPERTIES=alfresco-bart.properties
-BART_EXECUTE=alfresco-bart.sh
-
-# Color variables
-txtund=$(tput sgr 0 1)          # Underline
-txtbld=$(tput bold)             # Bold
-bldred=${txtbld}$(tput setaf 1) #  red
-bldgre=${txtbld}$(tput setaf 2) #  red
-bldblu=${txtbld}$(tput setaf 4) #  blue
-bldwht=${txtbld}$(tput setaf 7) #  white
-txtrst=$(tput sgr0)             # Reset
-info=${bldwht}*${txtrst}        # Feedback
-pass=${bldblu}*${txtrst}
-warn=${bldred}*${txtrst}
-ques=${bldblu}?${txtrst}
-
-function echoblue 
-{
-  echo "${bldblu}$1${txtrst}"
-}
-function echored 
-{
-  echo "${bldred}$1${txtrst}"
-}
-function echogreen 
-{
-  echo "${bldgre}$1${txtrst}"
-}
-
-echo -n "Path for Alfresco Debian installer temporary files (~/alfrescoinstall): "
+echo -n "Path for Alfresco Debian installer temporary files (~/alfinst): "
 read;
 test -z $REPLY || TMP_INSTALL=$REPLY
 test -d $TMP_INSTALL && (rm -rf $TMP_INSTALL && mkdir $TMP_INSTALL) || mkdir $TMP_INSTALL
@@ -103,35 +24,6 @@ echogreen "Please read the documentation at"
 echogreen "https://github.com/iwkse/alfresco-debian-install."
 echoblue "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"
 echo
-
-echo
-echo "${warn}${bldblu} - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ${warn}"
-echogreen "Do you want to install LXCommunity ECM build of Alfresco Community"
-echogreen "from Loftux AB?"
-echogreen "You can use this in place of Alfresco Community from Alfresco Software"
-echogreen "and optionally later buy a support package."
-echogreen "If you later prefer to use Alfresco Community you can always switch back"
-echogreen "by manually replacing war files."
-echo
-echogreen "Please visit https://loftux.com/alfresco for more information."
-echogreen "You are welcome to contact us at info@loftux.se"
-echo "${warn}${bldblu} - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ${warn}"
-echo
-read -e -p "Use LXCommunity ECM when installing${ques} [y/n] " -i "$DEFAULTYESNO" uselxcommunity
-if [ "$uselxcommunity" = "y" ]; then
-
-  ALFREPOWAR=$LXALFREPOWAR
-  ALFSHAREWAR=$LXALFSHAREWAR
-  ALFSHARESERVICES=$LXALFSHARESERVICES
-  AOS_AMP=$LXAOS_AMP
-
-  echo
-  echogreen "Thanks for choosing LXCommunity ECM"
-  echo
-else
-  echo "Installing Alfresco Community edition from Alfresco Software"
-  echo
-fi
 
 echo
 echoblue "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"
@@ -196,9 +88,11 @@ echo "You need to set the locale to use when running tomcat Alfresco instance."
 echo "This has an effect on date formats for transformations and support for"
 echo "international characters."
 echoblue "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"
+
 read -e -p "Enter the default locale to use: " -i "$LOCALESUPPORT" LOCALESUPPORT
 #install locale to support that locale date formats in open office transformations
-sudo locale-gen $LOCALESUPPORT
+sudo sed -i "s/^# \($LOCALESUPPORT UTF-8\)/\1/" /etc/locale.gen
+sudo locale-gen 
 echo
 echogreen "Finished updating locale"
 echo
@@ -212,16 +106,22 @@ echo "Read more at http://wiki.alfresco.com/wiki/Too_many_open_files"
 echoblue "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"
 read -e -p "Add limits.conf${ques} [y/n] " -i "$DEFAULTYESNO" updatelimits
 if [ "$updatelimits" = "y" ]; then
-  echo "alfresco  soft  nofile  8192" | sudo tee -a /etc/security/limits.conf
-  echo "alfresco  hard  nofile  65536" | sudo tee -a /etc/security/limits.conf
-  echo
-  echogreen "Updated /etc/security/limits.conf"
-  echo
-  echo "session required pam_limits.so" | sudo tee -a /etc/pam.d/common-session
-  echo "session required pam_limits.so" | sudo tee -a /etc/pam.d/common-session-noninteractive
-  echo
-  echogreen "Updated /etc/security/common-session*"
-  echo
+	cat /etc/security/limits.conf | grep "alfresco" > /dev/null
+	if [ $? -eq 1 ]; then
+		echo "alfresco  soft  nofile  8192" | sudo tee -a /etc/security/limits.conf
+		echo "alfresco  hard  nofile  65536" | sudo tee -a /etc/security/limits.conf
+		echo
+		echogreen "Updated /etc/security/limits.conf"
+	fi
+	cat /etc/pam.d/common-session | grep "pam_limits" > /dev/null
+	if [ $? -eq 1 ]; then
+		echo
+		echo "session required pam_limits.so" | sudo tee -a /etc/pam.d/common-session
+		echo "session required pam_limits.so" | sudo tee -a /etc/pam.d/common-session-noninteractive
+		echo
+		echogreen "Updated /etc/security/common-session*"
+		echo
+	fi
 else
   echo "Skipped updating limits.conf"
   echo
@@ -242,6 +142,7 @@ if [ "$installtomcat" = "y" ]; then
   # Make sure install dir exists, including logs dir
   mkdir -p $ALF_HOME/logs
   echo "Extracting..."
+  test -d $CATALINA_HOME || mkdir -p $CATALINA_HOME
   tar xf "$(find . -maxdepth 1 -type f -name "apache-tomcat*")" -C $CATALINA_HOME
   # Remove apps not needed
   rm -rf $CATALINA_HOME/webapps/*
@@ -250,14 +151,17 @@ if [ "$installtomcat" = "y" ]; then
   # Get Alfresco config
   echo "Downloading tomcat configuration files..."
   
-  curl -# -o $CATALINA_HOME/conf/server.xml $BASE_DOWNLOAD/tomcat/server.xml
-  curl -# -o $CATALINA_HOME/conf/catalina.properties $BASE_DOWNLOAD/tomcat/catalina.properties
-  curl -# -o $CATALINA_HOME/conf/tomcat-users.xml $BASE_DOWNLOAD/tomcat/tomcat-users.xml
-  curl -# -o $CATALINA_HOME/conf/context.xml $BASE_DOWNLOAD/tomcat/context.xml
-  sudo curl -# -o /etc/systemd/system/alfresco.service $BASE_DOWNLOAD/tomcat/alfresco.service
-  curl -# -o $ALF_HOME/alfresco-service.sh $BASE_DOWNLOAD/scripts/alfresco-service.sh
+  cp $TEMPLATES/tomcat/server.xml $CATALINA_HOME/conf/server.xml
+  sed -i "s!@@INSTHOME@@!$ALF_HOME!g" $CATALINA_HOME/conf/server.xml 
+  cp $TEMPLATES/tomcat/catalina.properties $CATALINA_HOME/conf/catalina.properties
+  cp $TEMPLATES/tomcat/tomcat-users.xml $CATALINA_HOME/conf/tomcat-users.xml
+  cp $TEMPLATES/tomcat/context.xml $CATALINA_HOME/conf/context.xml
+  sudo cp $TEMPLATES/tomcat/alfresco.service /etc/systemd/system/alfresco.service
+  sudo sed -i "s!@@INSTHOME@@!$ALF_HOME!g" /etc/systemd/system/alfresco.service 
+  cp $INST_SOURCE/scripts/alfresco-service.sh $ALF_HOME/alfresco-service.sh
   chmod 755 $ALF_HOME/alfresco-service.sh
   sed -i "s/@@LOCALESUPPORT@@/$LOCALESUPPORT/g" $ALF_HOME/alfresco-service.sh 
+  sed -i "s!@@INSTHOME@@!$ALF_HOME!g" $ALF_HOME/alfresco-service.sh 
   # Enable the service
   sudo systemctl enable alfresco.service
   sudo systemctl daemon-reload
@@ -286,19 +190,21 @@ if [ "$installtomcat" = "y" ]; then
   read -e -p "Please enter the host name for Alfresco Repository server that Share will use to talk to repository${ques} [localhost] " -i "localhost" SHARE_TO_REPO_HOSTNAME
   # Add default alfresco-global.propertis
   ALFRESCO_GLOBAL_PROPERTIES=$TMP_INSTALL/alfresco-global.properties
-  curl -# -o $ALFRESCO_GLOBAL_PROPERTIES $BASE_DOWNLOAD/tomcat/alfresco-global.properties
+  cp $TEMPLATES/tomcat/alfresco-global.properties $ALFRESCO_GLOBAL_PROPERTIES
   sed -i "s/@@ALFRESCO_SHARE_SERVER@@/$SHARE_HOSTNAME/g" $ALFRESCO_GLOBAL_PROPERTIES
   sed -i "s/@@ALFRESCO_SHARE_SERVER_PORT@@/$SHARE_PORT/g" $ALFRESCO_GLOBAL_PROPERTIES
   sed -i "s/@@ALFRESCO_SHARE_SERVER_PROTOCOL@@/$SHARE_PROTOCOL/g" $ALFRESCO_GLOBAL_PROPERTIES
   sed -i "s/@@ALFRESCO_REPO_SERVER@@/$REPO_HOSTNAME/g" $ALFRESCO_GLOBAL_PROPERTIES
+  sed -i "s!@@INSTHOME@@!$ALF_HOME!g" $ALFRESCO_GLOBAL_PROPERTIES 
   mv $ALFRESCO_GLOBAL_PROPERTIES $CATALINA_HOME/shared/classes/
 
   read -e -p "Install Share config file (recommended)${ques} [y/n] " -i "$DEFAULTYESNO" installshareconfig
   if [ "$installshareconfig" = "y" ]; then
     SHARE_CONFIG_CUSTOM=$TMP_INSTALL/share-config-custom.xml
-    curl -# -o $SHARE_CONFIG_CUSTOM $BASE_DOWNLOAD/tomcat/share-config-custom.xml
+    cp $TEMPLATES/tomcat/share-config-custom.xml $SHARE_CONFIG_CUSTOM
     sed -i "s/@@ALFRESCO_SHARE_SERVER@@/$SHARE_HOSTNAME/g" $SHARE_CONFIG_CUSTOM
     sed -i "s/@@SHARE_TO_REPO_SERVER@@/$SHARE_TO_REPO_HOSTNAME/g" $SHARE_CONFIG_CUSTOM
+    sed -i "s!@@INSTHOME@@!$ALF_HOME!g" $SHARE_CONFIG_CUSTOM
     mv $SHARE_CONFIG_CUSTOM $CATALINA_HOME/shared/classes/alfresco/web-extension/
   fi
 
@@ -308,9 +214,11 @@ if [ "$installtomcat" = "y" ]; then
     USE_POSTGRESQL=y
     curl -# -O $JDBCPOSTGRESURL/$JDBCPOSTGRES
     mv $JDBCPOSTGRES $CATALINA_HOME/lib
+	else
+  	echo "Skipping install of Postgres JDBC Connector"
   fi
   echo
-  read -e -p "Install Mysql JDBC Connector${ques} [y/n] " -i "$DEFAULTYESNO" installmy
+  read -e -p "Install Mysql JDBC Connector${ques} [y/n] " -i "n" installmy
   if [ "$installmy" = "y" ]; then
     USE_MARIADB=y
     curl -# -L -O $JDBCMYSQLURL/$JDBCMYSQL
@@ -318,6 +226,8 @@ if [ "$installtomcat" = "y" ]; then
     pushd "$(find . -type d -name "mysql-connector*")"
       mv mysql-connector*.jar $CATALINA_HOME/lib
     popd
+	else
+  	echo "Skipping install of mariaDB JDBC Connector"
   fi
   echo
   echogreen "Finished installing Tomcat"
@@ -345,17 +255,20 @@ if [ ! -x "$(command -v nginx)" ]; then
     sudo systemctl stop nginx
     sudo mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.backup
     sudo mv /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.sample
-    sudo curl -# -o /etc/nginx/nginx.conf $BASE_DOWNLOAD/nginx/nginx.conf
-    sudo curl -# -o /etc/nginx/conf.d/alfresco.conf $BASE_DOWNLOAD/nginx/alfresco.conf
-    sudo curl -# -o /etc/nginx/conf.d/alfresco.conf.ssl $BASE_DOWNLOAD/nginx/alfresco.conf.ssl 
-    sudo curl -# -o /etc/nginx/conf.d/basic-settings.conf $BASE_DOWNLOAD/nginx/basic-settings.conf
+    sudo cp $TEMPLATES/nginx/nginx.conf /etc/nginx/nginx.conf
+  	sudo sed -i "s!@@INSTHOME@@!$ALF_HOME!g" /etc/nginx/nginx.conf
+    sudo cp  $TEMPLATES/nginx/alfresco.conf /etc/nginx/conf.d/alfresco.conf
+  	sudo sed -i "s!@@INSTHOME@@!$ALF_HOME!g" /etc/nginx/conf.d/alfresco.conf
+    sudo cp  $TEMPLATES/nginx/alfresco.conf.ssl /etc/nginx/conf.d/alfresco.conf.ssl
+  	sudo sed -i "s!@@INSTHOME@@!$ALF_HOME!g" /etc/nginx/conf.d/alfresco.conf.ssl
+    sudo cp  $TEMPLATES/nginx/basic-settings.conf /etc/nginx/conf.d/basic-settings.conf
     mkdir -p $NGINX_CACHE
     # Make the ssl dir as this is what is used in sample config
     test -d /etc/nginx/ssl || sudo mkdir -p /etc/nginx/ssl
     mkdir -p $ALF_HOME/www
     if [ ! -f "$ALF_HOME/www/maintenance.html" ]; then
       echo "Downloading maintenance html page..."
-      curl -# -o $ALF_HOME/www/maintenance.html $BASE_DOWNLOAD/nginx/maintenance.html
+      cp $TEMPLATES/nginx/maintenance.html $ALF_HOME/www/maintenance.html
     fi
     sudo chown -R www-data:root $NGINX_CACHE
     sudo chown -R www-data:$USER $ALF_HOME/www
@@ -393,7 +306,7 @@ if [ "$installjdk" = "y" ]; then
   echoblue "Setting JAVA_HOME..."
   jhome=$(readlink -f /usr/bin/java)
   expjhome="export JAVA_HOME=${jhome%%/bin/java}"
-  echo $expjhome >> $HOME/.bashrc
+  echo $expjhome >> $ALF_HOME/.bashrc
   echogreen "Finished Setting JAVA_HOME "
   echo
 else
@@ -413,23 +326,29 @@ echoblue "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 read -e -p "Install LibreOffice${ques} [y/n] " -i "$DEFAULTYESNO" installibreoffice
 if [ "$installibreoffice" = "y" ]; then
 
-  curl -# -L -O $LIBREOFFICE
-  tar xf LibreOffice*.tar.gz
-  cd "$(find . -type d -name "LibreOffice*")"
-  cd DEBS
-  rm *gnome-integration*.deb &&\
-  rm *kde-integration*.deb &&\
-  rm *debian-menus*.deb &&\
-  sudo dpkg -i *.deb
+  dpkg -l | grep libreoffice6.4 > /dev/null
+  if [ $? -eq 1 ]; then
+    curl -# -L -O $LIBREOFFICE
+    tar xf LibreOffice*.tar.gz
+    cd "$(find . -type d -name "LibreOffice*")"
+    cd DEBS
+    rm *gnome-integration*.deb &&\
+    rm *kde-integration*.deb &&\
+    rm *debian-menus*.deb &&\
+    sudo dpkg -i *.deb
+  fi
   echo
   echoblue "Installing some support fonts for better transformations."
   # libxinerama1 libglu1-mesa needed to get LibreOffice 4.4 to work. Add the libraries that Alfresco mention in documentatinas required.
 
   ### ttf-mscorefonts-installer 3.8 
   ### Getting from sid repository
-  curl -# -o ttf.deb http://ftp.us.debian.org/debian/pool/contrib/m/msttcorefonts/ttf-mscorefonts-installer_3.8_all.deb
-  sudo apt-get $APTVERBOSITY install cabextract xfonts-utils fonts-noto fontconfig libcups2 libfontconfig1 libglu1-mesa libice6 libsm6 libxinerama1 libxrender1 libxt6 libcairo2
-  sudo dpkg -i ttf.deb
+  dpkg -l | grep mscorefonts > /dev/null
+  if [ $? -eq 1 ]; then
+    curl -# -o ttf.deb http://ftp.us.debian.org/debian/pool/contrib/m/msttcorefonts/ttf-mscorefonts-installer_3.8_all.deb
+    sudo apt-get $APTVERBOSITY install cabextract xfonts-utils fonts-noto fontconfig libcups2 libfontconfig1 libglu1-mesa libice6 libsm6 libxinerama1 libxrender1 libxt6 libcairo2
+    sudo dpkg -i ttf.deb
+  fi
   echo
   echogreen "Finished installing LibreOffice"
   echo
@@ -449,7 +368,8 @@ echo "It is recommended that you install ImageMagick."
 echo "If you prefer some other way of installing ImageMagick, skip this step."
 echoblue "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"
 read -e -p "Install ImageMagick${ques} [y/n] " -i "$DEFAULTYESNO" installimagemagick
-if [ "$installimagemagick" = "y" ]; then
+dpkg -l | grep imagemagick > /dev/null
+if [ "$installimagemagick" = "y" ] && [ $? -eq 1 ]; then
 
   echoblue "Installing ImageMagick. Fetching packages..."
   sudo apt-get $APTVERBOSITY install imagemagick ghostscript libgs-dev libjpeg62-turbo libpng16-16
@@ -477,7 +397,8 @@ echo
   mkdir -p $ALF_HOME/addons/alfresco
   if [ ! -f "$ALF_HOME/addons/apply.sh" ]; then
     echo "Downloading apply.sh script..."
-    curl -# -o $ALF_HOME/addons/apply.sh $BASE_DOWNLOAD/scripts/apply.sh
+    cp  $INST_SOURCE/scripts/apply.sh $ALF_HOME/addons/apply.sh
+    sed -i "s!@@INSTHOME@@!$ALF_HOME!g" $ALF_HOME/addons/apply.sh 
     chmod u+x $ALF_HOME/addons/apply.sh
   fi
   if [ ! -f "$ALF_HOME/addons/alfresco-mmt.jar" ]; then
@@ -498,39 +419,37 @@ echo
   if [ "$USE_MARIADB" = 'y' ]; then
     if [ ! -f "$ALF_HOME/scripts/mariadb.sh" ]; then
       echo "Downloading mariadb.sh install and setup script..."
-      curl -# -o $ALF_HOME/scripts/mariadb.sh $BASE_DOWNLOAD/scripts/mariadb.sh
+      cp $INST_SOURCE/scripts/mariadb.sh $ALF_HOME/scripts/mariadb.sh
     fi
   fi
   if [ "$USE_POSTGRESQL" = 'y' ]; then
     if [ ! -f "$ALF_HOME/scripts/postgresql.sh" ]; then
       echo "Downloading postgresql.sh install and setup script..."
-      curl -# -o $ALF_HOME/scripts/postgresql.sh $BASE_DOWNLOAD/scripts/postgresql.sh
+      cp $INST_SOURCE/scripts/postgresql.sh $ALF_HOME/scripts/postgresql.sh 
     fi
   fi
   if [ ! -f "$ALF_HOME/scripts/limitconvert.sh" ]; then
     echo "Downloading limitconvert.sh script..."
-    curl -# -o $ALF_HOME/scripts/limitconvert.sh $BASE_DOWNLOAD/scripts/limitconvert.sh
+    cp  $INST_SOURCE/scripts/limitconvert.sh $ALF_HOME/scripts/limitconvert.sh
   fi
   if [ ! -f "$ALF_HOME/scripts/createssl.sh" ]; then
     echo "Downloading createssl.sh script..."
-    curl -# -o $ALF_HOME/scripts/createssl.sh $BASE_DOWNLOAD/scripts/createssl.sh
+    cp $INST_SOURCE/scripts/createssl.sh $ALF_HOME/scripts/createssl.sh
   fi
   if [ ! -f "$ALF_HOME/scripts/libreoffice.sh" ]; then
     echo "Downloading libreoffice.sh script..."
-    curl -# -o $ALF_HOME/scripts/libreoffice.sh $BASE_DOWNLOAD/scripts/libreoffice.sh
+    cp $INST_SOURCE/scripts/libreoffice.sh $ALF_HOME/scripts/libreoffice.sh
     sed -i "s/@@LOCALESUPPORT@@/$LOCALESUPPORT/g" $ALF_HOME/scripts/libreoffice.sh
+  	sed -i "s!@@INSTHOME@@!$ALF_HOME!g" $ALF_HOME/scripts/libreoffice.sh
   fi
   if [ ! -f "$ALF_HOME/scripts/iptables.sh" ]; then
     echo "Downloading iptables.sh script..."
-    curl -# -o $ALF_HOME/scripts/iptables.sh $BASE_DOWNLOAD/scripts/iptables.sh
-  fi
-  if [ ! -f "$ALF_HOME/scripts/alfresco-iptables.conf" ]; then
-    echo "Downloading alfresco-iptables.conf upstart script..."
-    curl -# -o $ALF_HOME/scripts/alfresco-iptables.conf $BASE_DOWNLOAD/scripts/alfresco-iptables.conf
+    cp $INST_SOURCE/scripts/iptables.sh $ALF_HOME/scripts/iptables.sh
   fi
   if [ ! -f "$ALF_HOME/scripts/ams.sh" ]; then
     echo "Downloading maintenance shutdown script..."
-    curl -# -o $ALF_HOME/scripts/ams.sh $BASE_DOWNLOAD/scripts/ams.sh
+    cp $INST_SOURCE/scripts/ams.sh $ALF_HOME/scripts/ams.sh
+  	sed -i "s!@@INSTHOME@@!$ALF_HOME!g" $ALF_HOME/scripts/ams.sh
   fi
   chmod 755 $ALF_HOME/scripts/*.sh
 
@@ -570,7 +489,7 @@ if [ "$installwar" = "y" ]; then
   echo
 
   # Add default alfresco and share modules classloader config files
-  curl -# -o $CATALINA_HOME/conf/Catalina/localhost/alfresco.xml $BASE_DOWNLOAD/tomcat/alfresco.xml
+  cp $TEMPLATES/tomcat/alfresco.xml $CATALINA_HOME/conf/Catalina/localhost/alfresco.xml
 
   echogreen "Finished adding Alfresco Repository war file"
   echo
@@ -587,7 +506,7 @@ if [ "$installsharewar" = "y" ]; then
   curl -# -o $ALF_HOME/addons/war/share.war $ALFSHAREWAR
 
   # Add default alfresco and share modules classloader config files
-  curl -# -o $CATALINA_HOME/conf/Catalina/localhost/share.xml $BASE_DOWNLOAD/tomcat/share.xml
+  cp $TEMPLATES/tomcat/share.xml $CATALINA_HOME/conf/Catalina/localhost/share.xml
 
   echo
   echogreen "Finished adding Share war file"
@@ -677,9 +596,11 @@ if [ "$installsolr" = "y" ]; then
   popd
 
   echogreen "Downloading Solr6 scripts and settings file..."
-  sudo curl -# -o /etc/systemd/system/alfresco-search.service $BASE_DOWNLOAD/search/alfresco-search.service
-  curl -# -o $ALF_HOME/solr6/solrhome/conf/shared.properties $BASE_DOWNLOAD/search/shared.properties
-  curl -# -o $ALF_HOME/solr6/solr.in.sh $BASE_DOWNLOAD/search/solr.in.sh
+  sudo cp $TEMPLATES/search/alfresco-search.service /etc/systemd/system/alfresco-search.service
+  sudo sed -i "s!@@INSTHOME@@!$ALF_HOME!g" /etc/systemd/system/alfresco-search.service
+  cp $TEMPLATES/search/shared.properties $ALF_HOME/solr6/solrhome/conf/shared.properties
+  cp $TEMPLATES/search/solr.in.sh $ALF_HOME/solr6/solr.in.sh
+  sed -i "s!@@INSTHOME@@!$ALF_HOME!g" $ALF_HOME/solr6/solr.in.sh
   chmod u+x $ALF_HOME/solr6/solr.in.sh
   # Enable the service
   sudo systemctl enable alfresco-search.service
@@ -712,8 +633,10 @@ if [ "$installbart" = "y" ]; then
 
   mkdir -p $ALF_HOME/scripts/bart
   mkdir -p $ALF_HOME/logs/bart
-  curl -# -o $BART_PROPERTIES $BASE_BART_DOWNLOAD/$BART_PROPERTIES
-  curl -# -o $BART_EXECUTE $BASE_BART_DOWNLOAD/$BART_EXECUTE
+	BP=$ALF_HOME/scripts/bart/$BART_PROPERTIES
+	BE=$ALF_HOME/scripts/bart/$BART_EXECUTE
+  cp $TEMPLATES/bart/$BART_PROPERTIES $BP
+  cp $INST_SOURCE/scripts/$BART_EXECUTE $BE
 
   # Update bart settings
   ALFHOMEESCAPED="${ALF_HOME//\//\\/}"
@@ -725,22 +648,22 @@ if [ "$installbart" = "y" ]; then
   ALFBRTPATH="${ALFBRTPATH//\//\\/}"
   INDEXESDIR="${INDEXESDIR//\//\\/}"
 
-  sed -i "s/ALF_INSTALLATION_DIR\=.*/ALF_INSTALLATION_DIR\=$ALFHOMEESCAPED/g" $BART_PROPERTIES
-  sed -i "s/ALFBRT_LOG_DIR\=.*/ALFBRT_LOG_DIR\=$BARTLOGPATH/g" $BART_PROPERTIES
-  sed -i "s/INDEXES_DIR\=.*/INDEXES_DIR\=$INDEXESDIR/g" $BART_PROPERTIES
-  cp $BART_PROPERTIES $ALF_HOME/scripts/bart/$BART_PROPERTIES
-  sed -i "s/ALFBRT_PATH\=.*/ALFBRT_PATH\=$ALFBRTPATH/g" $BART_EXECUTE
-  cp $BART_EXECUTE $ALF_HOME/scripts/bart/$BART_EXECUTE
+  sed -i "s!@@INSTHOME@@!$ALF_HOME!g" $BP
+  sed -i "s!@@INSTHOME@@!$ALF_HOME!g" $BE
+  sed -i "s/ALF_INSTALLATION_DIR\=.*/ALF_INSTALLATION_DIR\=$ALFHOMEESCAPED/g" $BP
+  sed -i "s/ALFBRT_LOG_DIR\=.*/ALFBRT_LOG_DIR\=$BARTLOGPATH/g" $BP
+  sed -i "s/INDEXES_DIR\=.*/INDEXES_DIR\=$INDEXESDIR/g" $BP
+  sed -i "s/ALFBRT_PATH\=.*/ALFBRT_PATH\=$ALFBRTPATH/g" $BE
 
-  chmod 700 $ALF_HOME/scripts/bart/$BART_PROPERTIES
-  chmod 774 $ALF_HOME/scripts/bart/$BART_EXECUTE
+  chmod 700 $BP
+  chmod 774 $BE
 
   # Install dependency
   sudo apt-get $APTVERBOSITY install duplicity
   # Add to cron tab
   tmpfile=/tmp/crontab.tmp
   # add custom entries to crontab
-  echo "0 5 * * * $ALF_HOME/scripts/bart/$BART_EXECUTE backup" >> $tmpfile
+  echo "0 5 * * * $BE backup" >> $tmpfile
   #load crontab from file
   crontab $tmpfile
   # remove temporary file
@@ -781,7 +704,7 @@ echo
 echo "6. Start nginx if you have installed it: sudo service nginx start"
 echo
 echo "7. Start Alfresco/tomcat:"
-echo "   sudo $ALF_HOME/alfresco-service.sh start"
+echo "   $ALF_HOME/alfresco-service.sh start"
 echo
 echo
 echo "${warn}${bldblu} - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ${warn}"

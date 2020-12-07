@@ -10,12 +10,12 @@ Description=Alfresco IP Forwarding service
 
 [Service]
 Type=forking
-ExecStart=/opt/alfresco/scripts/iptables.sh start
-ExecStop=/opt/alfresco/scripts/iptables.sh stop
+ExecStart=@@INSTHOME@@/scripts/iptables.sh start
+ExecStop=@@INSTHOME@@/scripts/iptables.sh stop
 Restart=always
 User=root
 Group=root
-WorkingDirectory=/opt/alfresco/logs
+WorkingDirectory=@@INSTHOME@@/logs
 StartLimitBurst=0
 
 [Install]
