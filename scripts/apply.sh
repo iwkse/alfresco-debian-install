@@ -77,6 +77,7 @@ fi
 copy(){
 	echo "------------------------"
 	echo "Copying new war files..."
+	test -d $CATALINA_HOME/webapps || mkdir $CATALINA_HOME/webapps
         SHUTDOWN_PORT=`netstat -vatn|grep LISTEN|grep 8005|wc -l`
         export JAVA_HOME=$JAVA_HOME
         if [ $SHUTDOWN_PORT -ne 0 ]; then
