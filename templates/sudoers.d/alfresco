@@ -1,1 +1,1 @@
-alfresco ALL=NOPASSWD: /usr/bin/apt-get, /usr/sbin/adduser, /usr/sbin/locale-gen, /usr/bin/tee, /usr/bin/curl, /usr/bin/systemctl, /usr/bin/mv, /usr/bin/chown, /usr/bin/chmod, /usr/bin/dpkg, /usr/bin/ln, /usr/bin/cp
+alfresco ALL=NOPASSWD: /usr/bin/apt-get, /usr/sbin/adduser, /usr/sbin/locale-gen, /usr/bin/tee, /usr/bin/curl, /usr/bin/systemctl, /usr/bin/mv, /usr/bin/chown, /usr/bin/chmod, /usr/bin/dpkg, /usr/bin/ln, /usr/bin/cp, /usr/bin/apt-key
