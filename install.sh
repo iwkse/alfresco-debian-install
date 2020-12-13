@@ -256,13 +256,18 @@ if [ ! -x "$(command -v nginx)" ]; then
     sudo mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.backup
     sudo mv /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.sample
     sudo cp $TEMPLATES/nginx/nginx.conf /etc/nginx/nginx.conf
-  	sudo sed -i "s!@@INSTHOME@@!$ALF_HOME!g" /etc/nginx/nginx.conf
+    sudo sed -i "s!@@INSTHOME@@!$ALF_HOME!g" /etc/nginx/nginx.conf
+    sudo sed -i "s!@@NGINX_LOG@@!$ALF_HOME/logs!g" /etc/nginx/nginx.conf
     sudo cp  $TEMPLATES/nginx/alfresco.conf /etc/nginx/conf.d/alfresco.conf
-  	sudo sed -i "s!@@INSTHOME@@!$ALF_HOME!g" /etc/nginx/conf.d/alfresco.conf
+    sudo sed -i "s!@@INSTHOME@@!$ALF_HOME!g" /etc/nginx/conf.d/alfresco.conf
+    sudo sed -i "s!@@NGINX_CACHE@@!$NGINX_CACHE!g" /etc/nginx/nginx.conf
     sudo cp  $TEMPLATES/nginx/alfresco.conf.ssl /etc/nginx/conf.d/alfresco.conf.ssl
-  	sudo sed -i "s!@@INSTHOME@@!$ALF_HOME!g" /etc/nginx/conf.d/alfresco.conf.ssl
+    sudo sed -i "s!@@INSTHOME@@!$ALF_HOME!g" /etc/nginx/conf.d/alfresco.conf.ssl
+    sudo sed -i "s!@@NGINX_CACHE@@!$NGINX_CACHE!g" /etc/nginx/conf.d/alfresco.conf.ssl
     sudo cp  $TEMPLATES/nginx/basic-settings.conf /etc/nginx/conf.d/basic-settings.conf
-    mkdir -p $NGINX_CACHE
+    sudo sed -i "s!@@NGINX_LOG@@!$ALF_HOME/logs!g" /etc/nginx/conf.d/basic-settings.conf
+
+    test -d $NGINX_CACHE || mkdir -p $NGINX_CACHE
     # Make the ssl dir as this is what is used in sample config
     test -d /etc/nginx/ssl || sudo mkdir -p /etc/nginx/ssl
     mkdir -p $ALF_HOME/www
