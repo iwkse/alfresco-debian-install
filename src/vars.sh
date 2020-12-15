@@ -33,15 +33,27 @@ pass=${bldblu}*${txtrst}
 warn=${bldred}*${txtrst}
 ques=${bldblu}?${txtrst}
 
-function echoblue 
+function echob 
 {
   echo "${bldblu}$1${txtrst}"
 }
-function echored 
+function echor 
 {
   echo "${bldred}$1${txtrst}"
 }
-function echogreen 
+function echog 
 {
   echo "${bldgre}$1${txtrst}"
+}
+function printfb 
+{
+  printf "${bldblu}$1${txtrst}"
+}
+function printfr 
+{
+  printf "${bldred}$1${txtrst}"
+}
+function printfg
+{
+  printf "${bldgre}$1${txtrst}"
 }
