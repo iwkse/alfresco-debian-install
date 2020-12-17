@@ -213,7 +213,7 @@ function nginx_install
       sudo sed -i "s!@@NGINX_LOG@@!$ALF_HOME/logs!g" /etc/nginx/nginx.conf
       sudo cp  $TEMPLATES/nginx/alfresco.conf /etc/nginx/conf.d/alfresco.conf
       sudo sed -i "s!@@INSTHOME@@!$ALF_HOME!g" /etc/nginx/conf.d/alfresco.conf
-      sudo sed -i "s!@@NGINX_CACHE@@!$NGINX_CACHE!g" /etc/nginx/nginx.conf
+      sudo sed -i "s!@@NGINX_CACHE@@!$NGINX_CACHE!g" /etc/nginx/conf.d/alfresco.conf
       sudo cp  $TEMPLATES/nginx/alfresco.conf.ssl /etc/nginx/conf.d/alfresco.conf.ssl
       sudo sed -i "s!@@INSTHOME@@!$ALF_HOME!g" /etc/nginx/conf.d/alfresco.conf.ssl
       sudo sed -i "s!@@NGINX_CACHE@@!$NGINX_CACHE!g" /etc/nginx/conf.d/alfresco.conf.ssl
