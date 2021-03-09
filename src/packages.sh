@@ -105,6 +105,8 @@ function tomcat_install
     echo "Extracting..."
     test -d $CATALINA_HOME || mkdir -p $CATALINA_HOME
     tar xf "$(find . -maxdepth 1 -type f -name "apache-tomcat*")" -C $CATALINA_HOME
+    cp -rp $CATALINA_HOME/apache-tomcat*/* $CATALINA_HOME/
+    rm -rf $CATALINA_HOME/apache-tomcat*
     # Remove apps not needed
     rm -rf $CATALINA_HOME/webapps/*
     # Create Tomcat conf folder
@@ -132,9 +134,6 @@ function tomcat_install
     mkdir -p $CATALINA_HOME/shared/classes/alfresco/web-extension
     mkdir -p $CATALINA_HOME/shared/lib
     
-    # Add endorsed dir
-    mkdir -p $CATALINA_HOME/endorsed
-
     echo "You need to add the dns name, port and protocol for your server(s)."
     echo "It is important that this is is a resolvable server name."
     echo "This information will be added to default configuration files."
@@ -184,7 +183,7 @@ function tomcat_install
         mv mysql-connector*.jar $CATALINA_HOME/lib
       popd
     else
-      echo "Skipping install of mariaDB JDBC Connector"
+      echo "Skipping install of mariaDB sDBC Connector"
     fi
     echog "Finished installing Tomcat"
   else

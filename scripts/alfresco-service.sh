@@ -7,8 +7,7 @@
 # -------
 
 export LC_ALL=@@LOCALESUPPORT@@
-#export JAVA_HOME=/usr/lib/jvm/java-8-oracle/jre
-#export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
 export ALF_HOME=@@INSTHOME@@
 export CATALINA_HOME=@@INSTHOME@@/tomcat
 export CATALINA_TMPDIR=@@INSTHOME@@/tomcat/temp
@@ -24,7 +23,7 @@ JAVA_OPTS="-Xms1G -Xmx2G -Xss1024k"
 
 JAVA_OPTS="${JAVA_OPTS} -XX:+UseG1GC -XX:+UseStringDeduplication"
 
-JAVA_OPTS="${JAVA_OPTS} -Duser.country=US -Duser.region=US -Duser.language=en -Duser.timezone=\"Europe/Stockholm\" -d64"
+JAVA_OPTS="${JAVA_OPTS} -Duser.country=IT -Duser.region=IT -Duser.language=en -Duser.timezone=\"Europe/Rome\""
 # Enable this if you encounter problems with transformations of certain pdfs. Side effect is disable of remote debugging
 # JAVA_OPTS="${JAVA_OPTS}  -Djava.awt.headless=true"
 

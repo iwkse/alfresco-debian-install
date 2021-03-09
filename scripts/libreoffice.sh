@@ -7,7 +7,7 @@
 # -------
 
     # JDK locations
-    export JAVA_HOME="/usr/lib/jvm/java-8-oracle"
+    export JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
     export JRE_HOME=$JAVA_HOME/jre
 
     # User under which tomcat will run

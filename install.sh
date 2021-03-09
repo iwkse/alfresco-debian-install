@@ -43,8 +43,10 @@ pushd $TMP_INSTALL
     if [ "$1" = 'tomcat' ]; then
       tomcat_install
     fi
+    if [ "$1" = 'wars' ]; then
+      wars_install
+    fi
     if [ "$1" = 'nginx' ]; then
-echo "feeto"
       nginx_install
     fi
     if [ "$1" = 'java' ]; then
